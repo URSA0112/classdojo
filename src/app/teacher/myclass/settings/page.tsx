@@ -1,46 +1,56 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import AddStudent from "./components/AddStudentButton";
 import { columns, User } from "./components/Column";
 import { DataTable } from "./components/DataTable";
 
-const data: User[] = [
-  {
-    id: 1,
-    lastname: "bat",
-    firstname: "dorj",
-    email: "john@example.com",
-    contact: 12345678,
-    emergency: 12345678
-  },
-  {
-    id: 2,
-    lastname: "bold",
-    firstname: "uyanga",
-    email: "john@example.com",
-    contact: 12345678,
-    emergency: 12345678
-  },
-];
+export default function SettingsPage() {
+  const [data, setData] = useState<User[]>([]);
 
-export default async function settings() {
+  useEffect(() => {
+    const fetchStudents = async () => {
+      const res = await fetch(
+        "http://localhost:8000/api/v1/teacher/65f35086-52fa-424e-870c-32c3b9434f52/students",
+        { cache: "no-store" }
+      );
+      const teacherData = await res.json();
+      const students = teacherData.students;
+
+      const formattedData: User[] = students.map((s: any) => ({
+        id: s.id,
+        lastname: s.lastName,
+        firstname: s.firstName,
+        email: s.email,
+        contact: Number(s.phoneNumber),
+        emergency: Number(s.emergencyNumber),
+      }));
+
+      setData(formattedData);
+    };
+
+    fetchStudents();
+  }, []);
+
   return (
     <div className="mt-25 p-5">
-     <Card>
-      <CardContent>
-      <div className="flex justify-between">
-        <CardHeader className="font-bold text-2xl flex justify-between items-center">
-          Сурагчид
-        </CardHeader>
-        <div>
-          <AddStudent />
-        </div>
-      </div>
+      <Card>
+        <CardContent>
+          <div className="flex justify-between">
+            <CardHeader className="font-bold text-2xl flex justify-between items-center">
+              Сурагчид
+            </CardHeader>
+            <div>
+              <AddStudent />
+            </div>
+          </div>
 
-      <div className="p-4">
-        <DataTable columns={columns} data={data} />
-      </div>
-      </CardContent>
-     </Card>
+          <div className="p-4">
+            <DataTable columns={columns} data={data} />
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

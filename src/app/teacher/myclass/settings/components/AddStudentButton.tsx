@@ -4,7 +4,6 @@ import { useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -25,13 +24,19 @@ import {
 import { PlusIcon } from "lucide-react";
 
 const formSchema = z.object({
-  lastName: z.string().min(2, { message: "Овог хамгийн багадаа 2 үсэгтэй байх ёстой." }),
-  firstName: z.string().min(2, { message: "Нэр хамгийн багадаа 2 үсэгтэй байх ёстой." }),
+  lastName: z
+    .string()
+    .min(2, { message: "Овог хамгийн багадаа 2 үсэгтэй байх ёстой." }),
+  firstName: z
+    .string()
+    .min(2, { message: "Нэр хамгийн багадаа 2 үсэгтэй байх ёстой." }),
   email: z.string().email({ message: "Зөв email хаяг оруулна уу." }),
-
-  phone1: z.string().min(8, { message: "Утасны дугаар хамгийн багадаа 8 оронтой байх ёстой." }),
-  studentPhone: z.string().min(8, { message: "Утасны дугаар хамгийн багадаа 8 оронтой байх ёстой." }),
-  phone2: z.string().optional(),
+  phoneNumber: z
+    .string()
+    .min(8, { message: "Утасны дугаар хамгийн багадаа 8 оронтой байх ёстой." }),
+  emergencyNumber: z
+    .string()
+    .min(8, { message: "Утасны дугаар хамгийн багадаа 8 оронтой байх ёстой." }),
 });
 
 export default function AddStudent() {
@@ -44,21 +49,44 @@ export default function AddStudent() {
       lastName: "",
       firstName: "",
       email: "",
-      phone1: "",
-      phone2: "",
-      studentPhone: ""
+      phoneNumber: "",
+      emergencyNumber: "",
     },
   });
 
   const reset = () => {
     setStep(1);
     setOpen(false);
-    form.reset(); 
+    form.reset();
   };
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("Submitted:", values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const res = await fetch(
+        "http://localhost:8000/api/v1/teacher/add-student",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            firstName: values.firstName,
+            lastName: values.lastName,
+            email: values.email,
+            phoneNumber: values.phoneNumber,
+            emergencyNumber: values.emergencyNumber,
+            teacherId: "65f35086-52fa-424e-870c-32c3b9434f52",
+          }),
+        }
+      );
 
+      if (!res.ok) throw new Error("Failed to add student");
+      const data = await res.json();
+      console.log("Student added:", data);
+      reset();
+    } catch (error) {
+      console.error("Error:", error);
+    }
   }
 
   return (
@@ -93,7 +121,6 @@ export default function AddStudent() {
                       </FormItem>
                     )}
                   />
-
                   <FormField
                     control={form.control}
                     name="firstName"
@@ -107,7 +134,6 @@ export default function AddStudent() {
                       </FormItem>
                     )}
                   />
-
                   <FormField
                     control={form.control}
                     name="email"
@@ -121,10 +147,9 @@ export default function AddStudent() {
                       </FormItem>
                     )}
                   />
-
                   <FormField
                     control={form.control}
-                    name="studentPhone"
+                    name="phoneNumber"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Утасны дугаар</FormLabel>
@@ -142,26 +167,15 @@ export default function AddStudent() {
                 <>
                   <FormField
                     control={form.control}
-                    name="phone1"
+                    name="emergencyNumber"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Холбоо барих дугаар 1</FormLabel>
+                        <FormLabel>Яаралтай үед холбоо барих дугаар</FormLabel>
                         <FormControl>
-                          <Input placeholder="Утасны дугаар 1" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="phone2"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Холбоо барих дугаар 2</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Утасны дугаар 2" {...field} />
+                          <Input
+                            placeholder="Яаралтай үед холбоо барих"
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -171,11 +185,7 @@ export default function AddStudent() {
               )}
 
               <div className="flex justify-between mt-6">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={reset}
-                >
+                <Button type="button" variant="outline" onClick={reset}>
                   Цуцлах
                 </Button>
 
@@ -189,16 +199,15 @@ export default function AddStudent() {
                       Буцах
                     </Button>
                   )}
-
                   {step < 2 ? (
-                    <Button
-                      type="button"
-                      onClick={() => setStep(step + 1)}
-                    >
+                    <Button type="button" onClick={() => setStep(step + 1)}>
                       Дараагийн
                     </Button>
                   ) : (
-                    <Button type="submit" className="bg-green-600 hover:bg-green-700 text-white">
+                    <Button
+                      type="submit"
+                      className="bg-green-600 hover:bg-green-700 text-white"
+                    >
                       Хадгалах
                     </Button>
                   )}

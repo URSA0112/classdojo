@@ -1,15 +1,15 @@
 // columns.ts
-import { Payment } from "@/app/class/score/page"
-import { ColumnDef } from "@tanstack/react-table"
+
+import { ColumnDef } from "@tanstack/react-table";
 
 export type User = {
-  id: number
-  lastname: string
-  firstname: string
-  email: string
-  contact: number
-  emergency: number
-}
+  id: number;
+  lastname: string;
+  firstname: string;
+  email: string;
+  contact: number;
+  emergency: number;
+};
 
 export const columns: ColumnDef<User>[] = [
   {
@@ -36,4 +36,4 @@ export const columns: ColumnDef<User>[] = [
     accessorKey: "emergency",
     header: "Яаралтай үед холбоо барих дугаар",
   },
-]
+];
