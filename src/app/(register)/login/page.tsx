@@ -25,6 +25,7 @@ import {
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Card } from "@/components/ui/card";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -46,7 +47,7 @@ export default function LoginPage() {
   });
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const response = await fetch("http://localhost:8000/users/sign-in", {
+      const response = await fetch("http://localhost:3001/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -55,7 +56,17 @@ export default function LoginPage() {
       });
 
       const result = await response.json();
-      console.log("Response:", result);
+      console.log("Login result:", result);
+
+      if (response.status === 200 && result.message === "teacher") {
+        router.push("/teacher");
+      } else if (response.status === 200 && result.message === "student") {
+        router.push("/student");
+      } else if (response.status === 200 && result.message === "admin") {
+        router.push("/school");
+      } else if (response.status === 200 && result.message === "parent") {
+        router.push("/parent")
+      }
 
       if (!response.ok || !result.success) {
         toast(result.message);
@@ -65,7 +76,7 @@ export default function LoginPage() {
       toast.success("Login successful!");
       localStorage.setItem("userId", result.userId);
       router.push("/dashboard");
-    } catch (err) {
+    } catch (err: unknown) {
       console.error("Login error:", err);
       toast("Login failed. Please check your credentials.");
     }
@@ -74,10 +85,10 @@ export default function LoginPage() {
   return (
     <div className="w-full bg-yellow-300 flex h-screen ">
       <div className="w-1/2">
-        <div className="flex items-center gap-3 pt-10 pl-10 absolute ">
+        <div className="flex items-center gap-3 p-2 absolute  ">
           <Link href={"/"}>
             {" "}
-            <Image alt="logo" src="/logo-back.svg" width={300} height={100} />
+            <Image alt="logo" src="/logo-back.svg" width={150} height={50} />
           </Link>
         </div>
         <div className="flex justify-center items-center h-full px-5">
@@ -107,7 +118,7 @@ export default function LoginPage() {
         </div>
       </div>
       <div className=" bg-white w-4/4 rounded-l-4xl ">
-        <div className="flex justify-center self-center h-full">
+        <Card className="flex justify-center self-center h-full bg-blue-100 ">
           <div className="flex flex-col self-center justify-center ">
             <p className="font-semi text-3xl pb-8 leading-8">Welcome back</p>
             <Form {...form}>
@@ -177,7 +188,7 @@ export default function LoginPage() {
               </p>
             </div>
           </div>
-        </div>
+        </Card>
       </div>
     </div>
   );
