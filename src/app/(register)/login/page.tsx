@@ -15,8 +15,6 @@ import {
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import Autoplay from "embla-carousel-autoplay";
-
-import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
@@ -26,9 +24,7 @@ import {
 } from "@/components/ui/carousel";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Mail } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();

@@ -65,6 +65,7 @@ export default function AddTeacherDialog() {
 
         const payload = { firstname, lastname, email, phoneNumber, grade, group, subjects };
         console.log("payload:", payload);
+       
 
         // 🧼 Input-уудыг цэвэрлэх
         reset();
