@@ -3,7 +3,6 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import Image from "next/image";
 import { MessageCircle, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
 
 const students = [
   {
@@ -66,7 +65,6 @@ const students = [
 
 export default function StudentList() {
   // const navigate = useNavigate();
-
 
   return (
     <div className="px-10 pt-30 pb-10 w-full bg-gray-200">
