@@ -1,83 +1,117 @@
 "use client";
+import { Card, CardContent } from "@/components/ui/card";
+import Image from "next/image";
+import { Phone } from "lucide-react";
 
-import * as React from "react";
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
-
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartLegend,
-  ChartLegendContent,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
-import { Calendar } from "@/components/ui/calendar";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-
-const chartData = [
-  { month: "January", desktop: 86, mobile: 180 },
-  { month: "February", desktop: 105, mobile: 200 },
-  { month: "March", desktop: 137, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 109, mobile: 130 },
-  { month: "June", desktop: 84, mobile: 140 },
+const students = [
+  {
+    name: "Б.Номи",
+    img: "/em.jpg",
+    phone: "99123456",
+    email: "nomi@example.com",
+    emergencyContact: "99012345",
+  },
+  {
+    name: "Э.Батаа",
+    img: "/er.jpg",
+    phone: "99223344",
+    email: "bataa@example.com",
+    emergencyContact: "99112233",
+  },
+  {
+    name: "О.Саруул",
+    img: "/er.jpg",
+    phone: "99334455",
+    email: "saruul@example.com",
+    emergencyContact: "99012222",
+  },
+  {
+    name: "М.Ундраа",
+    img: "/em.jpg",
+    phone: "99445566",
+    email: "undraa@example.com",
+    emergencyContact: "99887766",
+  },
+  {
+    name: "С.Тэмүүжин",
+    img: "/er.jpg",
+    phone: "99556677",
+    email: "temu@example.com",
+    emergencyContact: "99776655",
+  },
+  {
+    name: "Т.Оюука",
+    img: "/em.jpg",
+    phone: "99667788",
+    email: "oyuka@example.com",
+    emergencyContact: "99668877",
+  },
+  {
+    name: "Ц.Энхээ",
+    img: "/er.jpg",
+    phone: "99778899",
+    email: "enhee@example.com",
+    emergencyContact: "99889988",
+  },
+  {
+    name: "Т.Наран",
+    img: "/em.jpg",
+    phone: "99889900",
+    email: "naran@example.com",
+    emergencyContact: "99990011",
+  },
 ];
 
-const chartConfig = {
-  desktop: {
-    label: "Desktop",
-    color: "#2563eb",
-  },
-  mobile: {
-    label: "Mobile",
-    color: "#60a5fa",
-  },
-} satisfies ChartConfig;
-
-export default function Home() {
-  const [date, setDate] = React.useState<Date | undefined>(new Date());
-
+export default function Page() {
   return (
-    <div className="bg-gray-200 pt-30 px-10 pb-10">
-      <div className="flex flex-col gap-10">
-        <Card>
-          <CardContent className="h-[400px]">
-            <CardHeader className="text-2xl font-bold leading-8 mb-5">Ангийн дүнгийн дундаж үзүүлэлт</CardHeader>
-            <div className="w-[500px] h-[200px]">
-              <div>
-                <h1 className="font-bold font-sans">
-                  Гар утас болон компьютерийн хэрэглээ:
-                </h1>
-              </div>
-
-              <ChartContainer config={chartConfig} className="h-[290px] mt-5 w-full">
-                <BarChart accessibilityLayer data={chartData}>
-                  <CartesianGrid vertical={false} />
-                  <XAxis
-                    dataKey="month"
-                    tickLine={false}
-                    tickMargin={10}
-                    axisLine={false}
-                    tickFormatter={(value) => value.slice(0, 3)}
+    <div className="px-10 py-12 w-full">
+      <h1 className="text-4xl font-bold mb-10 mt-20 text-center">
+        Ангийн сурагчдын нэрсийн жагсаалт
+      </h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        {students.map((student, index) => (
+          <Card
+            key={index}
+            className="hover:shadow-xl transition-shadow duration-300 rounded-2xl border border-gray-200"
+          >
+            <CardContent className="flex flex-col items-center p-5">
+              <div className="w-32 h-32 relative mb-4">
+                {student.img ? (
+                  <Image
+                    src={student.img}
+                    alt={`${student.name}-profile`}
+                    width={128}
+                    height={128}
+                    className="object-cover rounded-full border-4 border-white shadow"
                   />
-                  <ChartTooltip content={<ChartTooltipContent />} />
-                  <ChartLegend content={<ChartLegendContent />} />
-                  <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
-                  <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
-                </BarChart>
-              </ChartContainer>
-
-            </div>
-          </CardContent>
-        </Card>
-        <div className="bg-white w-[250px] ml-5 rounded-2xl">
-          <Calendar
-            mode="single"
-            selected={date}
-            onSelect={setDate}
-            className="rounded-md border"
-          />
-        </div>
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-gray-200 rounded-full">
+                    <span className="text-lg text-gray-500">Зураг байхгүй</span>
+                  </div>
+                )}
+              </div>
+              <div className="text-lg font-medium">{student.name}</div>
+              <div className="text-sm text-gray-500 mt-2 text-center">
+                <p>Утасны дугаар: {student.phone}</p>
+                <p>Имэйл: {student.email}</p>
+                <div className="mt-1">
+                  Яаралтай холбоо:
+                  <div className="flex justify-center">
+                    <button
+                      onClick={() =>
+                        (window.location.href = `tel:${student.emergencyContact}`)
+                      }
+                      className="flex items-center justify-center w-[110px] h-[50px] border-2 border-green-500 rounded-xl gap-2 cursor-pointer hover:bg-green-500 hover:text-white transition-0.9 text-green-500 text-bold mt-3"
+                    >
+                      <Phone className="w-6 h-6" />
+                      <span>Залгах</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
       </div>
     </div>
   );
