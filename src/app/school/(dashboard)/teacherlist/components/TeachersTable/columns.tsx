@@ -1,18 +1,15 @@
-"use client";
-
 import { ColumnDef } from "@tanstack/react-table";
 
-export type Table = {
+export type Teacher = {
   id: string;
   firstName: string;
   lastName: string;
-  email: string;
   phoneNumber: string;
   class: string;
   group: string;
 };
 
-export const columns: ColumnDef<Table>[] = [
+export const columns: ColumnDef<Teacher, unknown>[] = [
   {
     accessorKey: "firstName",
     header: "Овог",
@@ -20,10 +17,6 @@ export const columns: ColumnDef<Table>[] = [
   {
     accessorKey: "lastName",
     header: "Нэр",
-  },
-  {
-    accessorKey: "email",
-    header: "Имэйл",
   },
   {
     accessorKey: "phoneNumber",
@@ -38,10 +31,3 @@ export const columns: ColumnDef<Table>[] = [
     header: "Бүлэг",
   },
 ];
-
-export type Payment = {
-  id: string;
-  amount: number;
-  status: string;
-  email: string;
-};
