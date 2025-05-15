@@ -1,5 +1,5 @@
 import { Card } from "@/components/ui/card";
-import { columns, Payment } from "./columns";
+import { columns } from "./columns";
 import { DataTable } from "./data-table";
 
 interface Table {
@@ -31,12 +31,12 @@ export default async function TeacherTable() {
 
   return (
     <div>
-      {/* <Card className="container mx-auto p-5 mt-30">
+      <Card className="container mx-auto p-5 mt-30">
         <DataTable columns={columns} data={data} />
       </Card>
       <Card className="container mx-auto p-5 mt-10">
         <DataTable columns={columns} data={data} />
-      </Card> */}
+      </Card>
     </div>
   );
 }

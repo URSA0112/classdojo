@@ -22,15 +22,20 @@ import {
 import { DialogClose, DialogTrigger } from "@radix-ui/react-dialog";
 import { useTeacherFormStore } from "../../TeacherData/useTeacherFormStore";
 import { useState } from "react";
+import axios from "axios";
+import { toast } from "sonner";
+import { BASE_URL } from "@/constants/baseurl";
+import { set } from "date-fns";
 
 const classes = Array.from({ length: 12 }, (_, i) => (i + 1).toString());
 const groups = Array.from({ length: 10 }, (_, i) => (i + 1).toString());
 
 export default function AddTeacherDialog() {
-    
+    const [open, setOpen] = useState(false);
+
     const {
-        firstname,
-        lastname,
+        firstName,
+        lastName,
         email,
         phoneNumber,
         grade,
@@ -42,17 +47,17 @@ export default function AddTeacherDialog() {
     } = useTeacherFormStore();
 
     const [errors, setErrors] = useState({
-        firstname: false,
-        lastname: false,
+        firstName: false,
+        lastName: false,
         email: false,
         phoneNumber: false,
         subjects: false,
     });
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         const newErrors = {
-            firstname: !firstname.trim(),
-            lastname: !lastname.trim(),
+            firstName: !firstName.trim(),
+            lastName: !lastName.trim(),
             email: !email.trim(),
             phoneNumber: !phoneNumber.trim(),
             subjects: subjects.length === 0,
@@ -63,16 +68,27 @@ export default function AddTeacherDialog() {
         const hasError = Object.values(newErrors).some(Boolean);
         if (hasError) return;
 
-        const payload = { firstname, lastname, email, phoneNumber, grade, group, subjects };
+        const payload = { firstName, lastName, email, phoneNumber, grade, group, subjects };
         console.log("payload:", payload);
-       
+        try {
+            const res = await axios.post(`${BASE_URL}teacher`, payload);
+            console.log(res);
+
+            toast.success("Багш амжилттай нэмэгдлээ")
+            setOpen(false);
+        }
+        catch (error) {
+
+            console.log("Error adding teacher:", error)
+            toast.error("Багш нэмэхэд алдаа гарлаа")
+        }
 
         // 🧼 Input-уудыг цэвэрлэх
         reset();
-    };
+    }
 
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
             <AddTeacherButton />
             <DialogContent className="min-w-150 w-auto h-auto px-8">
                 <DialogHeader>
@@ -81,21 +97,21 @@ export default function AddTeacherDialog() {
 
                 <div className="space-y-4 mt-4">
                     <div className="grid gap-1.5">
-                        <Label className={errors.lastname ? "text-red-500" : ""}>Овог</Label>
+                        <Label className={errors.lastName ? "text-red-500" : ""}>Овог</Label>
                         <Input
                             placeholder="Овог"
-                            value={lastname}
-                            onChange={(e) => setField("lastname", e.target.value)}
-                            className={errors.lastname ? "border-red-500" : ""}
+                            value={lastName}
+                            onChange={(e) => setField("lastName", e.target.value)}
+                            className={errors.lastName ? "border-red-500" : ""}
                         />
                     </div>
                     <div className="grid gap-1.5">
-                        <Label className={errors.firstname ? "text-red-500" : ""}>Нэр</Label>
+                        <Label className={errors.firstName ? "text-red-500" : ""}>Нэр</Label>
                         <Input
                             placeholder="Нэр"
-                            value={firstname}
-                            onChange={(e) => setField("firstname", e.target.value)}
-                            className={errors.firstname ? "border-red-500" : ""}
+                            value={firstName}
+                            onChange={(e) => setField("firstName", e.target.value)}
+                            className={errors.firstName ? "border-red-500" : ""}
                         />
                     </div>
 
@@ -176,12 +192,15 @@ export default function AddTeacherDialog() {
                                 </Button>
                             </DialogClose>
                         </DialogClose>
+
+
                         <Button
                             className="cursor-pointer border-2 hover:bg-white hover:text-black hover:border-2 hover:border-black"
                             onClick={handleSubmit}
                         >
                             Хадгалах
                         </Button>
+
                     </div>
 
                 </div>
