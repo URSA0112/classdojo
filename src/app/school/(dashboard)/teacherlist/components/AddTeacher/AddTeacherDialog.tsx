@@ -25,11 +25,13 @@ import { useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 import { BASE_URL } from "@/constants/baseurl";
+import { set } from "date-fns";
 
 const classes = Array.from({ length: 12 }, (_, i) => (i + 1).toString());
 const groups = Array.from({ length: 10 }, (_, i) => (i + 1).toString());
 
 export default function AddTeacherDialog() {
+    const [open, setOpen] = useState(false);
 
     const {
         firstName,
@@ -73,6 +75,7 @@ export default function AddTeacherDialog() {
             console.log(res);
 
             toast.success("Багш амжилттай нэмэгдлээ")
+            setOpen(false);
         }
         catch (error) {
 
@@ -85,7 +88,7 @@ export default function AddTeacherDialog() {
     }
 
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
             <AddTeacherButton />
             <DialogContent className="min-w-150 w-auto h-auto px-8">
                 <DialogHeader>
@@ -189,12 +192,15 @@ export default function AddTeacherDialog() {
                                 </Button>
                             </DialogClose>
                         </DialogClose>
+
+
                         <Button
                             className="cursor-pointer border-2 hover:bg-white hover:text-black hover:border-2 hover:border-black"
                             onClick={handleSubmit}
                         >
                             Хадгалах
                         </Button>
+
                     </div>
 
                 </div>
