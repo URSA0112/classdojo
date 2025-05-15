@@ -1,8 +1,8 @@
 import { create } from "zustand";
 
 type TeacherFormState = {
-    firstname: string;
-    lastname: string;
+    firstName: string;
+    lastName: string;
     email: string;
     phoneNumber: string;
     grade: string;
@@ -15,8 +15,8 @@ type TeacherFormState = {
 };
 
 export const useTeacherFormStore = create<TeacherFormState>((set) => ({
-    firstname: "",
-    lastname: "",
+    firstName: "",
+    lastName: "",
     email: "",
     phoneNumber: "",
     grade: "",
@@ -30,8 +30,8 @@ export const useTeacherFormStore = create<TeacherFormState>((set) => ({
 
     reset: () =>
         set({
-            firstname: "",
-            lastname: "",
+            firstName: "",
+            lastName: "",
             email: "",
             phoneNumber: "",
             grade: "",
