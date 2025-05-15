@@ -19,13 +19,12 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from "@/components/ui/carousel";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Card } from "@/components/ui/card";
+import { BASE_URL } from "@/constants/baseurl";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -47,7 +46,7 @@ export default function LoginPage() {
   });
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const response = await fetch("http://localhost:3001/login", {
+      const response = await fetch(`${BASE_URL}auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
