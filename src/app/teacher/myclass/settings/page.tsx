@@ -39,7 +39,7 @@ export default function SettingsPage() {
         <CardContent>
           <div className="flex justify-between">
             <CardHeader className="font-bold text-2xl flex justify-between items-center">
-              Сурагчид
+              Сурагч
             </CardHeader>
             <div>
               <AddStudent />
