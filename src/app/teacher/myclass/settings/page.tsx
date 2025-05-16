@@ -12,7 +12,7 @@ export default function SettingsPage() {
   useEffect(() => {
     const fetchStudents = async () => {
       const res = await fetch(
-        "http://localhost:8000/api/v1/teacher/65f35086-52fa-424e-870c-32c3b9434f52/students",
+        "http://localhost:8000/api/v1/student/52aca953-dd89-4650-90e0-ddda6711ef9b/students",
         { cache: "no-store" }
       );
       const teacherData = await res.json();
