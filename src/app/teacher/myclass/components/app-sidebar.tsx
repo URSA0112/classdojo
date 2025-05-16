@@ -1,12 +1,4 @@
-import {
-  Activity,
-  House,
-  Info,
-  LayoutList,
-  PanelLeftOpen,
-  PersonStanding,
-  Settings,
-} from "lucide-react";
+import { Activity, Backpack, House, Info, Settings } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -46,7 +38,11 @@ const items = [
         url: "/teacher/myclass/parents",
         icon: Info,
       },
-      { title: "Тохиргоо", url: "/teacher/myclass/settings", icon: Settings },
+      {
+        title: "Сурагчдын мэдээлэл",
+        url: "/teacher/myclass/settings",
+        icon: Backpack,
+      },
     ],
   },
 ];
@@ -71,12 +67,12 @@ export function AppSidebar() {
             <SidebarMenu>
               {items.map((item: MenuItem) => (
                 <div key={item.group}>
-                  <div className="font-semibold text-2xl mb-5 ml-5 ">
+                  <div className="font-semibold text-2xl mb-5 ml-2  mt-4">
                     {item.group}
                   </div>
                   <div>
                     {item.links.map((link: MenuItemLink) => (
-                      <SidebarMenuItem key={link.title}>
+                      <SidebarMenuItem key={link.title} className="my-2">
                         <SidebarMenuButton className="flex justify-between items-center ">
                           <a
                             href={link.url}
