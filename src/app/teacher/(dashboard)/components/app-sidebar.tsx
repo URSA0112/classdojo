@@ -54,7 +54,11 @@ const items = [
         icon: User,
       },
       { title: "Ирц", url: "/teacher/attendance", icon: ScanEye },
-      { title: "Багшийн үнэлгээ", url: "/teacher/assessment", icon: TrendingUp },
+      {
+        title: "Багшийн үнэлгээ",
+        url: "/teacher/assessment",
+        icon: TrendingUp,
+      },
     ],
   },
   {
@@ -71,7 +75,11 @@ const items = [
   {
     group: "Хичээл",
     links: [
-      { title: "Хичээлийн хөтөлбөр", url: "/teacher/plan", icon: CalendarRange },
+      {
+        title: "Хичээлийн хөтөлбөр",
+        url: "/teacher/plan",
+        icon: CalendarRange,
+      },
       {
         title: "Шалгалт",
         url: "/teacher/exam",
@@ -83,7 +91,11 @@ const items = [
     group: "Сургууль",
     links: [
       { title: "Home", url: "/teacher/school", icon: Home },
-      { title: "Багш нарын мэдээлэл", url: "/teacher/teacherlist", icon: LayoutList },
+      {
+        title: "Багш нарын мэдээлэл",
+        url: "/teacher/teacherlist",
+        icon: LayoutList,
+      },
       { title: "Холбоо барих", url: "/teacher/contact", icon: NotebookTabs },
     ],
   },
@@ -91,9 +103,9 @@ const items = [
 
 export function AppSidebar() {
   return (
-    <Sidebar className="z-30">
+    <Sidebar className="z-30 ">
       <SidebarContent>
-        <SidebarGroup className="px-6 py-9 flex flex-col gap-4">
+        <SidebarGroup className="px-6 py-9 flex flex-col gap-4 ">
           <SidebarGroupLabel className="mt-15 flex justify-center flex-col gap-1">
             <h1 className="text-2xl font-bold leading-8 text-black ">Багш</h1>
             <div className="w-fit h-fit ">

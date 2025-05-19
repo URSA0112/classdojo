@@ -62,9 +62,8 @@ export const Header = () => {
   };
 
   return (
-    <div className="fixed bg-blue-100 w-full h-20 py-5 px-10 z-10">
+    <div className="fixed bg-teal-400 w-full h-20 py-5 px-10 z-10">
       <div className="flex items-center justify-end">
-        {/* <SidebarTrigger  className="flex justify-self-center"/> */}
         <div className="flex gap-6 items-center">
           {hasToken && pathname === "/teacher" && (
             <Form {...form}>

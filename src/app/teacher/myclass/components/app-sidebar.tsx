@@ -29,6 +29,11 @@ const items = [
     links: [
       { title: "Home", url: "/teacher/myclass", icon: House },
       {
+        title: "Сурагчдын мэдээлэл",
+        url: "/teacher/myclass/settings",
+        icon: Backpack,
+      },
+      {
         title: "Ангийн үйл ажиллагаа",
         url: "/teacher/myclass/activity",
         icon: Activity,
@@ -37,11 +42,6 @@ const items = [
         title: "Эцэг эхийн мэдээлэл",
         url: "/teacher/myclass/parents",
         icon: Info,
-      },
-      {
-        title: "Сурагчдын мэдээлэл",
-        url: "/teacher/myclass/settings",
-        icon: Backpack,
       },
     ],
   },

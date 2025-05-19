@@ -38,7 +38,7 @@ export default function SettingsPage() {
       <Card>
         <CardContent>
           <div className="flex justify-between">
-            <CardHeader className="font-bold text-2xl flex justify-between items-center bg-red-300  ">
+            <CardHeader className="font-bold text-2xl flex justify-between items-center ">
               Сурагч нар
             </CardHeader>
             <div>
