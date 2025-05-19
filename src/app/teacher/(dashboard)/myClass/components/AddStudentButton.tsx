@@ -39,7 +39,10 @@ const formSchema = z.object({
     .min(8, { message: "Утасны дугаар хамгийн багадаа 8 оронтой байх ёстой." }),
 });
 
-export default function AddStudent() {
+interface AddStudentProps {
+  className?: string;
+}
+export default function AddStudent({ className }: AddStudentProps) {
   const token = localStorage.getItem("token");
 
   const [open, setOpen] = useState(false);
@@ -63,6 +66,9 @@ export default function AddStudent() {
   };
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+
+    console.log(values);
+
     try {
       const res = await fetch(
         "http://localhost:8000/api/v1/student/add-student",
@@ -92,8 +98,8 @@ export default function AddStudent() {
   }
 
   return (
-    <div>
-      <Button onClick={() => setOpen(true)}>
+    <div className={`${className}`}>
+      <Button onClick={() => setOpen(true)} variant="outline">
         <PlusIcon /> Сурагч нэмэх
       </Button>
 

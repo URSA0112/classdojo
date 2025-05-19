@@ -24,6 +24,7 @@ import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Card } from "@/components/ui/card";
 import { BASE_URL } from "@/constants/baseurl";
+import axios from "axios";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -47,51 +48,38 @@ export default function LoginPage() {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/v1/auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok || !result.success) {
-        toast(result.message || "Login failed");
-        return;
+      const response = await axios.post(`${BASE_URL}auth/login`, values);
+      if (response.status === 200) {
+        toast("✅ Login successful! 🎉");
+        localStorage.setItem("token", response.data.token);
+        console.log(response.data);
       }
-      if (result.token) {
-        localStorage.setItem("token", result.token);
-      }
-      if (result.userId) {
-        localStorage.setItem("userId", result.userId);
-      }
-      toast.success("Login successful!");
 
-      switch (result.message) {
-        case "teacher":
-          router.push("/teacher");
-          break;
-        case "student":
-          router.push("/student");
-          break;
-        case "admin":
-          router.push("/school");
-          break;
-        case "parent":
-          router.push("/parent");
-          break;
-        default:
-          router.push("/dashboard");
-          break;
+      if (response.data.message === "admin") {
+        router.push("/school");
       }
-    } catch (err: unknown) {
-      console.error("Login error:", err);
-      toast("Login failed. Please check your credentials.");
-    }
-  };
+      if (response.data.message === "teacher") {
+        router.push("/teacher");
+      }
+      if (response.data.message === "student") {
+        router.push("/student");
+      }
+      if (response.data.message === "parent") {
+        router.push("/parent");
+      }
 
+    } catch (err: any) {
+      console.log("Login error:", err?.response?.data);
+
+      if (err?.response?.status === 401) {
+        toast("Login failed. Please check your credentials.")
+      }
+      if (err?.response?.status === 500) {
+        toast("Server error. Please try again later.")
+      };
+
+    };
+  }
   return (
     <div className="w-full bg-yellow-300 flex h-screen">
       <div className="w-1/2">
