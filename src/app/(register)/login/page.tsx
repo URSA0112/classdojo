@@ -54,14 +54,13 @@ export default function LoginPage() {
         },
         body: JSON.stringify(values),
       });
-      console.log(response);
+
       const result = await response.json();
 
       if (!response.ok || !result.success) {
         toast(result.message || "Login failed");
         return;
       }
-      console.log(result.token);
       if (result.token) {
         localStorage.setItem("token", result.token);
       }
@@ -70,7 +69,6 @@ export default function LoginPage() {
       }
       toast.success("Login successful!");
 
-      // ✅ Redirect based on role
       switch (result.message) {
         case "teacher":
           router.push("/teacher");
