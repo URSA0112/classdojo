@@ -3,8 +3,6 @@
 import { AlertTriangle, User, NotebookPen } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import AddStudent from "./components/AddStudentButton";
-import { DataTable } from "@/app/teacher/(dashboard)/myClass/components/DataTable";
-import { columns } from "@/app/teacher/(dashboard)/myClass/components/Column";
 import { useEffect, useState } from "react";
 type User = {
   id: number;
@@ -61,8 +59,8 @@ export default function MyClassOverview() {
       <div>
         {" "}
         {/* Key stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          <Card>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 bg-amber-100 p-2 rounded-2xl">
+          <Card className="">
             <CardHeader>
               <CardTitle>Сурагчдын тоо</CardTitle>
             </CardHeader>
@@ -90,15 +88,18 @@ export default function MyClassOverview() {
           </Card>
         </div>
         {/* Feed */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-blue-100 mt-5 p-2 rounded-2xl">
           <Card>
             <CardHeader className="flex items-center gap-2">
               <User className="text-blue-400 w-5 h-5" />
               <CardTitle className="text-sm">Шинээр элссэн сурагч</CardTitle>
             </CardHeader>
-            <CardContent className="text-gray-600 text-sm">
+            <CardContent className="text-gray-600 text-xl font-bold">
               Ган-Эрдэнэ (2025/05/19)
+              <AddStudent className="m-5"></AddStudent>
             </CardContent>
+
+
           </Card>
 
           <Card>
@@ -112,24 +113,7 @@ export default function MyClassOverview() {
           </Card>
         </div>
       </div>
-      <div className="mt-5 ">
-        <Card>
-          <CardContent>
-            <div className="flex justify-between">
-              <CardHeader className="font-bold text-2xl flex justify-between items-center ">
-                Сурагч нар
-              </CardHeader>
-              <div>
-                <AddStudent />
-              </div>
-            </div>
 
-            <div className="p-4">
-              <DataTable columns={columns} data={data} />
-            </div>
-          </CardContent>
-        </Card>
-      </div>
     </div>
   );
 }
