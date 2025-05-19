@@ -75,7 +75,7 @@ export default function AddStudent() {
             email: values.email,
             phoneNumber: values.phoneNumber,
             emergencyNumber: values.emergencyNumber,
-            teacherId: "52aca953-dd89-4650-90e0-ddda6711ef9b",
+            // teacherId: ,
           }),
         }
       );

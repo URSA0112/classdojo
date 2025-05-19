@@ -6,7 +6,6 @@ import { z } from "zod";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -35,8 +34,9 @@ export default function LoginPage() {
       .email("Please enter a valid email address")
       .min(5)
       .max(50),
-    password: z.string().min(8, "Password must be at least 8 characters"),
+    password: z.string(),
   });
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -44,37 +44,50 @@ export default function LoginPage() {
       password: "",
     },
   });
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const response = await fetch(`${BASE_URL}auth/login`, {
+      const response = await fetch(`http://localhost:8000/api/v1/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(values),
       });
-
+      console.log(response);
       const result = await response.json();
-      console.log("Login result:", result);
-
-      if (response.status === 200 && result.message === "teacher") {
-        router.push("/teacher");
-      } else if (response.status === 200 && result.message === "student") {
-        router.push("/student");
-      } else if (response.status === 200 && result.message === "admin") {
-        router.push("/school");
-      } else if (response.status === 200 && result.message === "parent") {
-        router.push("/parent")
-      }
 
       if (!response.ok || !result.success) {
-        toast(result.message);
+        toast(result.message || "Login failed");
         return;
       }
-
+      console.log(result.token);
+      if (result.token) {
+        localStorage.setItem("token", result.token);
+      }
+      if (result.userId) {
+        localStorage.setItem("userId", result.userId);
+      }
       toast.success("Login successful!");
-      localStorage.setItem("userId", result.userId);
-      router.push("/dashboard");
+
+      // ✅ Redirect based on role
+      switch (result.message) {
+        case "teacher":
+          router.push("/teacher");
+          break;
+        case "student":
+          router.push("/student");
+          break;
+        case "admin":
+          router.push("/school");
+          break;
+        case "parent":
+          router.push("/parent");
+          break;
+        default:
+          router.push("/dashboard");
+          break;
+      }
     } catch (err: unknown) {
       console.error("Login error:", err);
       toast("Login failed. Please check your credentials.");
@@ -82,11 +95,10 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="w-full bg-yellow-300 flex h-screen ">
+    <div className="w-full bg-yellow-300 flex h-screen">
       <div className="w-1/2">
-        <div className="flex items-center gap-3 p-2 absolute  ">
+        <div className="flex items-center gap-3 p-2 absolute">
           <Link href={"/"}>
-            {" "}
             <Image alt="logo" src="/logo-back.svg" width={150} height={50} />
           </Link>
         </div>
@@ -104,7 +116,7 @@ export default function LoginPage() {
                 <CarouselItem key={index}>
                   <div className="flex aspect-square items-center justify-center p-0">
                     <Image
-                      alt="car-1"
+                      alt="carousel"
                       src="/logo-back.svg"
                       width={300}
                       height={300}
@@ -116,10 +128,12 @@ export default function LoginPage() {
           </Carousel>
         </div>
       </div>
-      <div className=" bg-white w-4/4 rounded-l-4xl ">
-        <Card className="flex justify-center self-center h-full bg-blue-100 ">
-          <div className="flex flex-col self-center justify-center ">
+
+      <div className="bg-white w-4/4 rounded-l-4xl">
+        <Card className="flex justify-center self-center h-full bg-blue-100">
+          <div className="flex flex-col self-center justify-center">
             <p className="font-semi text-3xl pb-8 leading-8">Welcome back</p>
+
             <Form {...form}>
               <form
                 className="space-y-8"
@@ -135,9 +149,8 @@ export default function LoginPage() {
                           type="email"
                           placeholder="Please your email"
                           {...field}
-                        ></Input>
+                        />
                       </FormControl>
-
                       <FormMessage />
                     </FormItem>
                   )}
@@ -152,9 +165,8 @@ export default function LoginPage() {
                           type="password"
                           placeholder="Please your password"
                           {...field}
-                        ></Input>
+                        />
                       </FormControl>
-
                       <FormMessage />
                     </FormItem>
                   )}
@@ -168,9 +180,10 @@ export default function LoginPage() {
                 </Button>
               </form>
             </Form>
+
             <div className="flex items-center justify-between gap-2 my-5">
               <hr className="w-full border-gray-300" />
-              <span className="text-gray-400 ">or </span>
+              <span className="text-gray-400">or</span>
               <hr className="w-full border-gray-300" />
             </div>
 
@@ -180,6 +193,7 @@ export default function LoginPage() {
               <Button variant="outline">Continue with Apple</Button>
               <Button variant="outline">Continue with Twitter</Button>
             </div>
+
             <div>
               <hr className="text-gray-400 mt-5 mb-5" />
               <p className="text-gray-400">
