@@ -12,23 +12,13 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { AddTeacherButton } from "./AddTeacherTriggerButton";
 import CheckSubject from "./CheckBox";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
 import { DialogClose, DialogTrigger } from "@radix-ui/react-dialog";
 import { useTeacherFormStore } from "../../TeacherData/useTeacherFormStore";
 import { useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 import { BASE_URL } from "@/constants/baseurl";
-import { set } from "date-fns";
-
-const classes = Array.from({ length: 12 }, (_, i) => (i + 1).toString());
-const groups = Array.from({ length: 10 }, (_, i) => (i + 1).toString());
+import GradeGroup from "./GradeGroup";
 
 export default function AddTeacherDialog() {
     const [open, setOpen] = useState(false);
@@ -40,9 +30,8 @@ export default function AddTeacherDialog() {
         phoneNumber,
         grade,
         group,
-        subjects,
+        subject,
         setField,
-        setSubjects,
         reset
     } = useTeacherFormStore();
 
@@ -51,7 +40,7 @@ export default function AddTeacherDialog() {
         lastName: false,
         email: false,
         phoneNumber: false,
-        subjects: false,
+        subject: false,
     });
 
     const handleSubmit = async () => {
@@ -60,7 +49,7 @@ export default function AddTeacherDialog() {
             lastName: !lastName.trim(),
             email: !email.trim(),
             phoneNumber: !phoneNumber.trim(),
-            subjects: subjects.length === 0,
+            subject: subject.length === 0,
         };
 
         setErrors(newErrors);
@@ -68,7 +57,8 @@ export default function AddTeacherDialog() {
         const hasError = Object.values(newErrors).some(Boolean);
         if (hasError) return;
 
-        const payload = { firstName, lastName, email, phoneNumber, grade, group, subjects };
+        const payload = { firstName, lastName, email, phoneNumber, grade, group, subject };
+
         console.log("payload:", payload);
         try {
             const res = await axios.post(`${BASE_URL}teacher`, payload);
@@ -76,6 +66,7 @@ export default function AddTeacherDialog() {
 
             toast.success("Багш амжилттай нэмэгдлээ")
             setOpen(false);
+            reset();
         }
         catch (error) {
 
@@ -84,7 +75,8 @@ export default function AddTeacherDialog() {
         }
 
         // 🧼 Input-уудыг цэвэрлэх
-        reset();
+
+
     }
 
     return (
@@ -94,7 +86,7 @@ export default function AddTeacherDialog() {
                 <DialogHeader>
                     <DialogTitle>Шинэ багш нэмэх</DialogTitle>
                 </DialogHeader>
-
+                {/* 1 */}
                 <div className="space-y-4 mt-4">
                     <div className="grid gap-1.5">
                         <Label className={errors.lastName ? "text-red-500" : ""}>Овог</Label>
@@ -105,6 +97,8 @@ export default function AddTeacherDialog() {
                             className={errors.lastName ? "border-red-500" : ""}
                         />
                     </div>
+
+                    {/* 2 */}
                     <div className="grid gap-1.5">
                         <Label className={errors.firstName ? "text-red-500" : ""}>Нэр</Label>
                         <Input
@@ -115,6 +109,7 @@ export default function AddTeacherDialog() {
                         />
                     </div>
 
+                    {/* 3 */}
                     <div className="grid gap-1.5">
                         <Label className={errors.email ? "text-red-500" : ""}>Имэйл</Label>
                         <Input
@@ -126,6 +121,7 @@ export default function AddTeacherDialog() {
                         />
                     </div>
 
+                    {/* 4 */}
                     <div className="grid gap-1.5">
                         <Label className={errors.email ? "text-red-500" : ""}>Утасны дугаар</Label>
                         <Input
@@ -137,12 +133,12 @@ export default function AddTeacherDialog() {
                         />
                     </div>
 
-
-                    <Label className={errors.subjects ? "text-red-500" : ""}>Заах хичээл</Label>
+                    {/* 5 */}
+                    <Label className={errors.subject ? "text-red-500" : ""}>Заах хичээл</Label>
                     <Dialog>
                         <DialogTrigger asChild>
-                            <Button variant="outline" className={errors.subjects ? "border-red-500 text-red-500" : "w-full"}>
-                                {subjects.length > 0 ? subjects.join(", ") : "Сонгох"}
+                            <Button variant="outline" className={errors.subject ? "border-red-500 text-red-500" : "w-full"}>
+                                {subject.length > 0 ? subject.join(", ") : "Сонгох"}
                             </Button>
                         </DialogTrigger>
 
@@ -152,34 +148,9 @@ export default function AddTeacherDialog() {
                         </DialogContent>
                     </Dialog>
 
+                    {/* 6 */}
                     <Label>Даасан анги</Label>
-                    <div className="flex gap-2">
-                        <Select value={grade} onValueChange={(val) => setField("grade", val)}>
-                            <SelectTrigger className="w-[100px]">
-                                <SelectValue placeholder="Анги" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                {classes.map((grade) => (
-                                    <SelectItem key={grade} value={grade}>
-                                        {grade}-р анги
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-
-                        <Select value={group} onValueChange={(val) => setField("group", val)}>
-                            <SelectTrigger className="w-[100px]">
-                                <SelectValue placeholder="Бүлэг" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                {groups.map((group) => (
-                                    <SelectItem key={group} value={group}>
-                                        {group}-р бүлэг
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                    </div>
+                    <GradeGroup setField={setField}></GradeGroup>
 
                     <div className="flex gap-5 justify-end">
                         <DialogClose asChild>

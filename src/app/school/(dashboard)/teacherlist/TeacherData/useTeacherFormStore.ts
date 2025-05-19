@@ -7,10 +7,10 @@ type TeacherFormState = {
     phoneNumber: string;
     grade: string;
     group: string;
-    subjects: string[];
+    subject: string[];
 
     setField: (field: string, value: string) => void;
-    setSubjects: (subjects: string[]) => void;
+    setSubject: (subject: string[]) => void;
     reset: () => void;
 };
 
@@ -21,12 +21,12 @@ export const useTeacherFormStore = create<TeacherFormState>((set) => ({
     phoneNumber: "",
     grade: "",
     group: "",
-    subjects: [],
+    subject: [],
 
     setField: (field, value) =>
         set((state) => ({ ...state, [field]: value })),
 
-    setSubjects: (subjects) => set({ subjects }),
+    setSubject: (subject) => set({ subject }),
 
     reset: () =>
         set({
@@ -36,6 +36,6 @@ export const useTeacherFormStore = create<TeacherFormState>((set) => ({
             phoneNumber: "",
             grade: "",
             group: "",
-            subjects: [],
+            subject: [],
         }),
 }));
