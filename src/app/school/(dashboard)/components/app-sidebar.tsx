@@ -54,6 +54,26 @@ const items = [
     ],
   },
   {
+    group: "Сургууль",
+    links: [
+      {
+        title: "Багшын мэдээлэл",
+        url: "/school/teacherlist",
+        icon: LayoutList,
+      },
+    ],
+  },
+  {
+    group: "Сурагч",
+    links: [
+      {
+        title: "Сурагчдийн мэдээлэл",
+        url: "/school/studentsinfo",
+        icon: SquareUser,
+      },
+    ],
+  },
+  {
     group: "Анги",
     links: [
       { title: "Ангийн жагсаалт", url: "/school/class", icon: LayoutDashboard },
@@ -64,36 +84,11 @@ const items = [
       },
     ],
   },
-  {
-    group: "Сурагч",
-    links: [
-      { title: "Сурагчдийн мэдээлэл", url: "/school/studentsinfo", icon: SquareUser },
-      {
-        title: "Сурагчдийн үзүүлэлт",
-        url: "/school/studentsassessment",
-        icon: ChartSpline,
-      },
-      {
-        title: "Сурагчдын үйл ажилгаа",
-        url: "/school/studentactivity",
-        icon: ListTodo,
-      },
-    ],
-  },
-  {
-    group: "Сургууль",
-    links: [
-      { title: "HomePage", url: "/school/school", icon: Home },
-      { title: "Багшын мэдээлэл", url: "/school/teacherlist", icon: LayoutList },
-      { title: "Холбоо барих", url: "/school/contact", icon: PhoneCall },
-    ],
-  },
 ];
 
 export function AppSidebar() {
   return (
     <Sidebar className="z-30">
-      <SidebarTrigger className="absolute left-70"></SidebarTrigger>
       <SidebarContent>
         <SidebarGroup className="px-6 py-9 flex flex-col gap-4">
           <SidebarGroupLabel className="flex flex-col">
