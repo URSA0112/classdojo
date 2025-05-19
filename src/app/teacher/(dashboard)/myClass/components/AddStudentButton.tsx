@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -22,6 +22,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { PlusIcon } from "lucide-react";
+import axios from "axios";
+import { BASE_URL } from "@/constants/baseurl";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   lastName: z
@@ -42,11 +45,19 @@ const formSchema = z.object({
 interface AddStudentProps {
   className?: string;
 }
-export default function AddStudent({ className }: AddStudentProps) {
-  const token = localStorage.getItem("token");
 
+export default function AddStudent({ className }: AddStudentProps) {
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState(1);
+  const [token, setToken] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedToken = localStorage.getItem("token");
+      setToken(storedToken);
+    }
+  }, []);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -65,50 +76,47 @@ export default function AddStudent({ className }: AddStudentProps) {
     form.reset();
   };
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    if (!token) {
+      toast("⚠️ Token not loaded yet. Please wait.");
+      return;
+    }
 
-    console.log(values);
+    setIsLoading(true);
 
     try {
-      const res = await fetch(
-        "http://localhost:8000/api/v1/student/add-student",
+      const response = await axios.post(
+        `${BASE_URL}student`,
+        values,
         {
-          method: "POST",
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({
-            firstName: values.firstName,
-            lastName: values.lastName,
-            email: values.email,
-            phoneNumber: values.phoneNumber,
-            emergencyNumber: values.emergencyNumber,
-          }),
         }
       );
 
-      if (!res.ok) throw new Error("Failed to add student");
-      const data = await res.json();
-      console.log("Student added:", data);
+      console.log("✅ Student added:", response.data);
+      toast(`✅ Сурагч ${values.lastName} нэмэгдлээ`);
       reset();
-    } catch (error) {
-      console.error("Error:", error);
+    } catch (error: any) {
+      console.log("❌ Error adding student:", error);
+      toast("❌ Алдаа гарлаа. Сурагч нэмэхэд амжилтгүй боллоо.");
+    } finally {
+      setIsLoading(false); // ✅ Always stop loading
     }
-  }
+  };
 
   return (
-    <div className={`${className}`}>
+    <div className={className}>
       <Button onClick={() => setOpen(true)} variant="outline">
-        <PlusIcon /> Сурагч нэмэх
+        <PlusIcon className="mr-2 h-4 w-4" />
+        Сурагч нэмэх
       </Button>
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle className="text-2xl font-bold">
-              Шинэ сурагч нэмэх
-            </DialogTitle>
+            <DialogTitle className="text-2xl font-bold">Шинэ сурагч нэмэх</DialogTitle>
             <DialogDescription>Мэдээллийг бүрэн бөглөнө үү.</DialogDescription>
           </DialogHeader>
 
@@ -116,80 +124,45 @@ export default function AddStudent({ className }: AddStudentProps) {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               {step === 1 && (
                 <>
-                  <FormField
-                    control={form.control}
-                    name="lastName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Овог</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Овог" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="firstName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Нэр</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Нэр" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Email хаяг</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Email хаяг" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="phoneNumber"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Утасны дугаар</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Утасны дугаар" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  <FormField name="lastName" control={form.control} render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Овог</FormLabel>
+                      <FormControl><Input placeholder="Овог" {...field} /></FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )} />
+                  <FormField name="firstName" control={form.control} render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Нэр</FormLabel>
+                      <FormControl><Input placeholder="Нэр" {...field} /></FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )} />
+                  <FormField name="email" control={form.control} render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email хаяг</FormLabel>
+                      <FormControl><Input placeholder="Email хаяг" {...field} /></FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )} />
+                  <FormField name="phoneNumber" control={form.control} render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Утасны дугаар</FormLabel>
+                      <FormControl><Input placeholder="Утасны дугаар" {...field} /></FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )} />
                 </>
               )}
 
               {step === 2 && (
-                <>
-                  <FormField
-                    control={form.control}
-                    name="emergencyNumber"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Яаралтай үед холбоо барих дугаар</FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="Яаралтай үед холбоо барих"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </>
+                <FormField name="emergencyNumber" control={form.control} render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Яаралтай үед холбоо барих</FormLabel>
+                    <FormControl><Input placeholder="Яаралтай үед холбоо барих дугаар" {...field} /></FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )} />
               )}
 
               <div className="flex justify-between mt-6">
@@ -199,11 +172,7 @@ export default function AddStudent({ className }: AddStudentProps) {
 
                 <div className="flex gap-2">
                   {step > 1 && (
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() => setStep(step - 1)}
-                    >
+                    <Button type="button" variant="outline" onClick={() => setStep(step - 1)}>
                       Буцах
                     </Button>
                   )}
@@ -214,9 +183,10 @@ export default function AddStudent({ className }: AddStudentProps) {
                   ) : (
                     <Button
                       type="submit"
-                      className="bg-green-600 hover:bg-green-700 text-white"
+                      disabled={isLoading}
+                      className="bg-green-600 hover:bg-green-700 text-white disabled:opacity-60"
                     >
-                      Хадгалах
+                      {isLoading ? <span className="animate-pulse">⏳ Хүлээнэ үү...</span> : "Хадгалах"}
                     </Button>
                   )}
                 </div>
