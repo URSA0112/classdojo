@@ -123,11 +123,10 @@ function AccomplishedTask() {
             <div
               key={item.id}
               onClick={() => setSelectedTask(item)}
-              className={`flex flex-col gap-1 items-center justify-center border-b-2 transition-colors duration-300  ${
-                selectedTask.id === item.id
-                  ? " border-b-blue-600"
-                  : " border-b-black"
-              } w-[100px] hover:border-b-2 pb-2`}
+              className={`flex flex-col gap-1 items-center justify-center border-b-2 transition-colors duration-300  ${selectedTask.id === item.id
+                ? " border-b-blue-600"
+                : " border-b-black"
+                } w-[100px] hover:border-b-2 pb-2`}
             >
               {" "}
               <Image
@@ -137,9 +136,8 @@ function AccomplishedTask() {
                 alt="data-scient"
               ></Image>
               <p
-                className={`font-medium transition-colors duration-300 ${
-                  selectedTask.id === item.id ? "text-blue-500" : "text-black"
-                }`}
+                className={`font-medium transition-colors duration-300 cursor-pointer ${selectedTask.id === item.id ? "text-blue-500" : "text-black"
+                  }`}
               >
                 {item.title}
               </p>
