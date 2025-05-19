@@ -4,11 +4,9 @@ import {
   Backpack,
   BookCheck,
   Home,
-  Info,
   LayoutDashboard,
   PanelTop,
   ScanEye,
-  TrendingUp,
   User,
 } from "lucide-react";
 import {
@@ -28,7 +26,7 @@ import { usePathname } from "next/navigation";
 interface MenuItem {
   title: string;
   url: string;
-  icon: React.ComponentType;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   children?: MenuItem[];
 }
 
