@@ -9,7 +9,7 @@ import { DialogClose } from "@/components/ui/dialog";
 
 export default function CheckSubject() {
     const [selected, setSelected] = useState<string[]>([]);
-    const { setSubjects } = useTeacherFormStore();
+    const { setSubject } = useTeacherFormStore();
 
     const handleChange = (subject: string) => {
         let updated: string[];
@@ -21,7 +21,7 @@ export default function CheckSubject() {
         }
 
         setSelected(updated);
-        setSubjects(updated);
+        setSubject(updated);
     };
 
     return (
