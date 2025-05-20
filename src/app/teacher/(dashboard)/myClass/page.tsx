@@ -4,51 +4,48 @@ import { AlertTriangle, User, NotebookPen } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import AddStudent from "./components/AddStudentButton";
 import { useEffect, useState } from "react";
-type User = {
-  id: number;
-  lastname: string;
-  firstname: string;
-  email: string;
-  contact: number;
-  emergency: number;
-};
+// type User = {
+//   id: number;
+//   lastname: string;
+//   firstname: string;
+//   email: string;
+//   contact: number;
+//   emergency: number;
+// };
 
 export default function MyClassOverview() {
-  const [data, setData] = useState<User[]>([]);
-  console.log(data);
-  useEffect(() => {
-    const fetchStudents = async () => {
-      const token = localStorage.getItem("token");
-      console.log(token);
-      if (!token) return;
+  // const [data, setData] = useState<User[]>([]);
+  // console.log(data);
+  // useEffect(() => {
+  //   const fetchStudents = async () => {
+  //     const token = localStorage.getItem("token");
+  //     console.log(token);
+  //     if (!token) return;
 
-      const decoded = JSON.parse(atob(token.split(".")[1]));
-      const teacherId = decoded.teacherId;
-      const res = await fetch(
-        `http://localhost:8000/api/v1/student/${teacherId}/students`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          cache: "no-store",
-        }
-      );
-      const teacherData = await res.json();
-      const students = teacherData.students;
-      const formattedData: User[] = students.map((s: any) => ({
-        id: Number(s.id),
-        lastname: s.lastName,
-        firstname: s.firstName,
-        email: s.email,
-        contact: Number(s.phoneNumber),
-        emergency: Number(s.emergencyNumber),
-      }));
+  //     const decoded = JSON.parse(atob(token.split(".")[1]));
+  //     const teacherId = decoded.teacherId;
+  //     const res = await fetch(`http://localhost:8000/api/v1/student/students`, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //       cache: "no-store",
+  //     });
+  //     const teacherData = await res.json();
+  //     const students = teacherData.students;
+  //     const formattedData: User[] = students.map((s: any) => ({
+  //       id: Number(s.id),
+  //       lastname: s.lastName,
+  //       firstname: s.firstName,
+  //       email: s.email,
+  //       contact: Number(s.phoneNumber),
+  //       emergency: Number(s.emergencyNumber),
+  //     }));
 
-      setData(formattedData);
-    };
+  //     setData(formattedData);
+  //   };
 
-    fetchStudents();
-  }, []);
+  //   fetchStudents();
+  // }, []);
 
   return (
     <div className="p-10 bg-white space-y-8 min-h-screen">
@@ -98,8 +95,6 @@ export default function MyClassOverview() {
               Ган-Эрдэнэ (2025/05/19)
               <AddStudent className="m-5"></AddStudent>
             </CardContent>
-
-
           </Card>
 
           <Card>
@@ -113,7 +108,6 @@ export default function MyClassOverview() {
           </Card>
         </div>
       </div>
-
     </div>
   );
 }

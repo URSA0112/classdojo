@@ -52,7 +52,7 @@ export default function LoginPage() {
       if (response.status === 200) {
         toast("✅ Login successful! 🎉");
         localStorage.setItem("token", response.data.token);
-        console.log(response.data);
+        console.log(response.data, "newtreh hesegiin token");
       }
 
       if (response.data.message === "admin") {
@@ -67,19 +67,17 @@ export default function LoginPage() {
       if (response.data.message === "parent") {
         router.push("/parent");
       }
-
     } catch (err: any) {
       console.log("Login error:", err?.response?.data);
 
       if (err?.response?.status === 401) {
-        toast("Login failed. Please check your credentials.")
+        toast("Login failed. Please check your credentials.");
       }
       if (err?.response?.status === 500) {
-        toast("Server error. Please try again later.")
-      };
-
-    };
-  }
+        toast("Server error. Please try again later.");
+      }
+    }
+  };
   return (
     <div className="w-full bg-yellow-300 flex h-screen">
       <div className="w-1/2">
