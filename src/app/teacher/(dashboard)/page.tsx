@@ -1,6 +1,8 @@
 'use client';
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 import TeacherHome from "./home/page";
+
+
 
 
 export default function TeacherMainPage() {
