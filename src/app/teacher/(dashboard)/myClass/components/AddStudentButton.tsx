@@ -21,6 +21,14 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
 import { PlusIcon } from "lucide-react";
 import axios from "axios";
 import { BASE_URL } from "@/constants/baseurl";
@@ -40,6 +48,7 @@ const formSchema = z.object({
   emergencyNumber: z
     .string()
     .min(8, { message: "Утасны дугаар хамгийн багадаа 8 оронтой байх ёстой." }),
+  gender: z.enum(["male", "female"]),
 });
 
 interface AddStudentProps {
@@ -67,6 +76,7 @@ export default function AddStudent({ className }: AddStudentProps) {
       email: "",
       phoneNumber: "",
       emergencyNumber: "",
+      gender: undefined,
     },
   });
 
@@ -92,6 +102,8 @@ export default function AddStudent({ className }: AddStudentProps) {
       });
 
       console.log("✅ Student added:", response.data);
+      console.log("Submitted values:", values);
+
       toast(`✅ Сурагч ${values.lastName} нэмэгдлээ`);
       reset();
     } catch (error: any) {
@@ -170,6 +182,36 @@ export default function AddStudent({ className }: AddStudentProps) {
                         <FormControl>
                           <Input placeholder="Утасны дугаар" {...field} />
                         </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="gender"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Хүйс</FormLabel>
+                        <Select
+                          value={field.value || ""}
+                          onValueChange={(value) => {
+                            console.log(
+                              "Selected gender before submit:",
+                              value
+                            );
+                            field.onChange(value);
+                          }}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Хүйсээ сонгоно уу" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="male">Эрэгтэй</SelectItem>
+                            <SelectItem value="female">Эмэгтэй</SelectItem>
+                          </SelectContent>
+                        </Select>
                         <FormMessage />
                       </FormItem>
                     )}
