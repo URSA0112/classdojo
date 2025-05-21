@@ -17,9 +17,7 @@ export default function ClassDetailsPanel({ className }: { className: string }) 
             <div className="flex justify-between items-center">
                 <h2 className="text-xl font-bold">{className} — Хичээлийн дэлгэрэнгүй</h2>
                 <div className="flex gap-2">
-                    <Button variant="ghost" onClick={() => setOpen(false)}>
-                        <MessageSquareX className="w-4 h-4 mr-1" /> Хаах
-                    </Button>
+
                     <Link href="/teacher/class">
                         <Button variant="secondary">Буцах</Button>
                     </Link>

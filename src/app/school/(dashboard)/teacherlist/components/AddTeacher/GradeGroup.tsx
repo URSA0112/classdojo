@@ -9,10 +9,10 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 
-type GradeGroupProps = {
-    setField: (field: string, value: string) => void;
-    onChange?: (val: string) => void
-};
+interface GradeGroupProps {
+    setField?: (field: string, value: string) => void; // 👈 энэ байх ёстой
+    onChange?: (val: string) => void;
+}
 
 type Group = {
     id: string;
@@ -25,7 +25,7 @@ type Group = {
     };
 };
 
-export default function GradeGroup({ setField }: GradeGroupProps) {
+export default function GradeGroup({ setField, onChange }: GradeGroupProps) {
     const [groupData, setGroupData] = useState<Group[]>([]);
     const [grades, setGrades] = useState<
         { id: string; number: number }[]
@@ -80,7 +80,7 @@ export default function GradeGroup({ setField }: GradeGroupProps) {
             <Select
                 onValueChange={(val) => {
                     setSelectedGradeId(val);
-                    setField("grade", val);
+                    setField?.("gradeId", val);
                 }}
             >
                 <SelectTrigger className="w-[100px]">
@@ -98,7 +98,7 @@ export default function GradeGroup({ setField }: GradeGroupProps) {
             {/* Group select */}
             <Select
                 onValueChange={(val) => {
-                    setField("group", val);
+                    setField?.("groupId", val); 
                 }}
                 disabled={!selectedGradeId}
             >

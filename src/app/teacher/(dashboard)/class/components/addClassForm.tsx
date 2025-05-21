@@ -10,9 +10,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 
 import GradeGroup from "@/app/school/(dashboard)/teacherlist/components/AddTeacher/GradeGroup"
 import axios from "axios"
-import { BASE_URL } from "@/constants/baseurl"
+
 import { toast } from "sonner"
 import ChooseSubject from "./Subject"
+import { BASE_URL } from "@/constants/baseurl"
 
 const days = ["Даваа", "Мягмар", "Лхагва", "Пүрэв", "Баасан"]
 const timeSlots = Array.from({ length: 12 }, (_, i) => `${8 + i}:00`)
@@ -20,31 +21,27 @@ const timeSlots = Array.from({ length: 12 }, (_, i) => `${8 + i}:00`)
 type ScheduleEntry = { day: string; time: string }
 
 export default function AddClassForm() {
-    const [token, setToken] = useState<string | null>(null);
-    const [isLoading, setIsLoading] = useState(false);
-    const [errors, setErrors] = useState({ subject: "", grade: "" })
+    const [token, setToken] = useState<string | null>(null)
+    const [isLoading, setIsLoading] = useState(false)
+    const [errors, setErrors] = useState({ subject: "", gradeId: "", groupId: "" })
     const [form, setForm] = useState({
         subject: [] as string[],
-        grade: "",
+        gradeId: "",
+        groupId: "",
         schedule: [] as ScheduleEntry[],
         term: "",
     })
 
-    // 🔐 Токеныг localStorage-оос авах
     useEffect(() => {
-        if (typeof window !== "undefined") {
-            const storedToken = localStorage.getItem("token");
-            setToken(storedToken);
-        }
-    }, []);
+        const storedToken = localStorage.getItem("token")
+        setToken(storedToken)
+    }, [])
 
-    // ⌨️ Инпут талбаруудыг өөрчлөх
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setForm({ ...form, [e.target.name]: e.target.value })
         setErrors({ ...errors, [e.target.name]: "" })
     }
 
-    // 📅 Өдөр сонгох/буцаах
     const toggleDay = (day: string) => {
         const updated = form.schedule.some(s => s.day === day)
             ? form.schedule.filter(s => s.day !== day)
@@ -52,7 +49,6 @@ export default function AddClassForm() {
         setForm({ ...form, schedule: updated })
     }
 
-    // ⏰ Цаг тохируулах
     const setTime = (day: string, time: string) => {
         setForm({
             ...form,
@@ -60,35 +56,30 @@ export default function AddClassForm() {
         })
     }
 
-    // 📤 Илгээх үйлдэл
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         setIsLoading(true)
 
         const newErrors = {
-            subject: form.subject.length ? "" : "❗ Заах хичээлээ заавал сонгоно уу",
-            grade: form.grade.trim() ? "" : "❗ Хичээл заах ангийг сонгоно уу",
+            subject: form.subject.length ? "" : "❗ Заах хичээлээ сонгоно уу",
+            gradeId: form.gradeId ? "" : "❗ Анги сонгоно уу",
+            groupId: form.groupId ? "" : "❗ Бүлэг сонгоно уу",
         }
         setErrors(newErrors)
-        if (newErrors.subject || newErrors.grade) {
+        if (newErrors.subject || newErrors.gradeId || newErrors.groupId) {
             setIsLoading(false)
             return
         }
 
         try {
-            const response = await axios.post(`${BASE_URL}teachingClass`, form, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-
-            console.log("✅ Хичээл нэмэгдсэн:", response.data);
-            toast("✅ Хичээл орох анги амжилттай нэмэгдлээ");
-        } catch (error: any) {
-            console.log("❌ Алдаа гарлаа:", error);
-            toast("❌ Хичээл нэмэхэд алдаа гарлаа. Дахин оролдоно уу.");
+            const res = await axios.post(`${BASE_URL}teachingClass`, form, {
+                headers: { Authorization: `Bearer ${token}` },
+            })
+            toast("✅ Хичээл орох анги амжилттай нэмэгдлээ")
+        } catch (err) {
+            toast("❌ Хичээл нэмэхэд алдаа гарлаа")
         } finally {
-            setIsLoading(false);
+            setIsLoading(false)
         }
     }
 
@@ -97,8 +88,7 @@ export default function AddClassForm() {
             <form onSubmit={handleSubmit} className="space-y-8">
                 <CardContent className="space-y-6">
 
-                    {/* 📘 Хичээл сонгох */}
-                    <div>
+                    <div className="space-y-3">
                         <Label className={errors.subject ? "text-red-500" : ""}>Заах хичээл</Label>
                         <Dialog>
                             <DialogTrigger asChild>
@@ -114,16 +104,16 @@ export default function AddClassForm() {
                         {errors.subject && <p className="text-sm text-red-500">{errors.subject}</p>}
                     </div>
 
-                    {/* 🏫 Хичээл заах анги */}
-                    <div>
+                    <div className="space-y-3">
                         <Label>Хичээл заах анги</Label>
                         <GradeGroup
-                            setField={(field: string, value: string) => setForm({ ...form, [field]: value })}
-                            onChange={(val: string) => setForm({ ...form, grade: val })} />
-                        {errors.grade && <p className="text-sm text-red-500">{errors.grade}</p>}
+                            setField={(field, value) => setForm({ ...form, [field]: value })}
+                        />
+                        {(errors.gradeId || errors.groupId) && (
+                            <p className="text-sm text-red-500">{errors.gradeId || errors.groupId}</p>
+                        )}
                     </div>
 
-                    {/* 📅 Хичээлийн өдрүүд ба цаг */}
                     <div className="space-y-3">
                         <Label>Хичээл орох өдрүүд ба цаг</Label>
                         <div className="flex flex-wrap gap-2">
@@ -131,8 +121,9 @@ export default function AddClassForm() {
                                 <Button key={day} type="button"
                                     variant={form.schedule.some(s => s.day === day) ? "default" : "outline"}
                                     onClick={() => toggleDay(day)}
-                                    className="text-sm px-4 py-2"
-                                >{day}</Button>
+                                    className="text-sm px-4 py-2">
+                                    {day}
+                                </Button>
                             ))}
                         </div>
 
@@ -153,8 +144,7 @@ export default function AddClassForm() {
                         ))}
                     </div>
 
-                    {/* 📆 Улирал */}
-                    <div>
+                    <div className="space-y-3">
                         <Label htmlFor="term">Улирал / Хичээлийн жил (заавал биш)</Label>
                         <Input
                             id="term"
