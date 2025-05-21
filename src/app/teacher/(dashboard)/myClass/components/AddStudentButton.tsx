@@ -51,7 +51,9 @@ export default function AddStudent({ className }: AddStudentProps) {
   const [step, setStep] = useState(1);
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
   console.log(token, "suragch nemeh hesegin token--------");
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       const storedToken = localStorage.getItem("token");
@@ -85,7 +87,7 @@ export default function AddStudent({ className }: AddStudentProps) {
     setIsLoading(true);
 
     try {
-      const response = await axios.post(`${BASE_URL}student`, values, {
+      const response = await axios.post(`http://localhost:8000/api/v1/student`, values, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
