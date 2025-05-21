@@ -7,7 +7,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
 import { LineChart, CalendarDays, BookOpenText, UserRoundCheck, MessageCircle } from "lucide-react"
 import Link from "next/link"
-import ClassDetailsPanel from "./selectedClass/page"
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 
 import AddClassForm from "./components/addClassForm"
@@ -45,15 +44,15 @@ export default function TeacherSubjectDashboard() {
 
     return (
         <div className="space-y-10 p-6">
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center ">
                 <h1 className="text-2xl font-bold">📘 Math Dashboard</h1>
                 <Dialog>
                     <DialogTrigger asChild>
                         <Button variant="outline">+ Шинэ анги нэмэх</Button>
                     </DialogTrigger>
 
-                    <DialogContent>
-                        <DialogTitle>Шинэ анги нэмэх</DialogTitle>
+                    <DialogContent className="text-center w-250 h-auto bg-amber-200 ">
+                        <DialogTitle className="m-2">Шинэ анги нэмэх</DialogTitle>
                         <AddClassForm />
                     </DialogContent>
                 </Dialog>

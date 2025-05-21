@@ -11,6 +11,7 @@ import {
 
 type GradeGroupProps = {
     setField: (field: string, value: string) => void;
+    onChange?: (val: string) => void
 };
 
 type Group = {

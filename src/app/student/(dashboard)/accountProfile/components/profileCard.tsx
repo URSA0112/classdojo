@@ -11,7 +11,7 @@ export default function StudentProfileCard({ className }: Props) {
     const student = {
         name: 'Alex Johnson',
         grade: '11A',
-        avatarUrl: '/images/student-avatar.png',
+        avatarUrl: '/student.png',
         achievements: [
             { icon: <Trophy className="text-yellow-400" />, title: 'Conqueror' },
             { icon: <Medal className="text-gray-400" />, title: 'Team Player' },
