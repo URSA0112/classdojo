@@ -18,7 +18,8 @@ import { useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 import { BASE_URL } from "@/constants/baseurl";
-import GradeGroup from "./GradeGroup";
+import SelectClass from "./SelectClass";
+
 
 export default function AddTeacherDialog() {
     const [open, setOpen] = useState(false);
@@ -58,10 +59,12 @@ export default function AddTeacherDialog() {
         if (hasError) return;
 
         const payload = { firstName, lastName, email, phoneNumber, grade, group, subject };
+        console.log(payload);
+
 
         console.log("payload:", payload);
         try {
-            const res = await axios.post(`${BASE_URL}teacher`, payload);
+            const res = await axios.post(`http://localhost:8000/api/v1/teacher`, payload);
             console.log(res);
 
             toast.success("Багш амжилттай нэмэгдлээ")
@@ -150,7 +153,7 @@ export default function AddTeacherDialog() {
 
                     {/* 6 */}
                     <Label>Даасан анги</Label>
-                    <GradeGroup setField={setField}></GradeGroup>
+                    <SelectClass setField={setField}></SelectClass>
 
                     <div className="flex gap-5 justify-end">
                         <DialogClose asChild>

@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Dialog, DialogTrigger, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
-import GradeGroup from "@/app/school/(dashboard)/teacherlist/components/AddTeacher/GradeGroup"
+import GradeGroup from "@/app/school/class/components/GradeGroup"
 import axios from "axios"
 
 import { toast } from "sonner"
