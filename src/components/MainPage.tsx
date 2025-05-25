@@ -13,11 +13,10 @@ export const MainPage = () => {
   }, []);
   return (
     <div
-      className={`${
-        scrolled
+      className={`${scrolled
           ? "h-screen w-screen  bg-blue-400 pt-25 flex items-center justify-center transition-all duration-400"
           : "h-screen w-screen bg-teal-400  pt-25 flex items-center justify-center transition-all duration-400"
-      }`}
+        }`}
     >
       <div className="flex flex-row gap-50 justify-center items-center ">
         <motion.div className="flex flex-col gap-4">
@@ -31,11 +30,10 @@ export const MainPage = () => {
           </p>
         </motion.div>
         <motion.div
-          className={`${
-            scrolled
+          className={`${scrolled
               ? "bg-teal-400 rounded-full transition-all duration-400"
               : "bg-blue-400 rounded-full transition-all duration-400"
-          }`}
+            }`}
         >
           {" "}
           <Image

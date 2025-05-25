@@ -64,7 +64,7 @@ export default function AddTeacherDialog() {
 
         console.log("payload:", payload);
         try {
-            const res = await axios.post(`http://localhost:8000/api/v1/teacher`, payload);
+            const res = await axios.post(`${BASE_URL}teacher`, payload);
             console.log(res);
 
             toast.success("Багш амжилттай нэмэгдлээ")
