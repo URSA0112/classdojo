@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -32,6 +32,9 @@ export default function StudentHomePage() {
     return (
         <div className="max-w-6xl mx-auto p-6 space-y-6">
             <button onClick={checkuser} className="bg-red-400 text-black px-4 py-2 rounded">
+                CHeck USER
+            </button>
+            <button onClick={signOut} className="bg-red-400 text-black px-4 py-2 rounded">
                 CHeck USER
             </button>
             <h1 className="text-2xl font-bold">👋 Сайн байна уу, {user ? user.fullName : "User"}</h1>

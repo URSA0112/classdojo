@@ -1,3 +1,4 @@
+'use client'
 import SectionHeader from "./section-header";
 import SectionInfo from "./section-info";
 import SectionTool from "./section-tool";
