@@ -1,8 +1,6 @@
 'use client'
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { AppSidebar } from "./teacher-sidebar"
-import { useEffect } from "react"
-import supabase from "@/utils/supabase"
 
 
 export default function Layout({ children }: { children: React.ReactNode }) {
