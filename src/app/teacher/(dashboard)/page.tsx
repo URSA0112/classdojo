@@ -1,9 +1,4 @@
-
-import dynamic from 'next/dynamic'
-
-const TeacherMainPage = dynamic(() => import('./TeacherMainPage'), {
-  ssr: false,
-})
+import TeacherMainPage from './TeacherMainPage'
 
 export default function Page() {
   return <TeacherMainPage />
