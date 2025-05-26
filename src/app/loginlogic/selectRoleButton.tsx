@@ -3,8 +3,10 @@ import { useState } from "react"
 import supabase from "../../utils/supabase"
 
 export default function SelectRoleButton() {
+    const baseUrl = typeof window !== 'undefined' && window.location.origin
+        ? window.location.origin
+        : process.env.NEXT_PUBLIC_BASE_URL || "https://classdojo-git-main-ursa0112s-projects.vercel.app/";
 
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
     const [selectedRole, setSelectedRole] = useState("")
 
     const handleLoginWithRole = async (role: string) => {
