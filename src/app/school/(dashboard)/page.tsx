@@ -12,19 +12,6 @@ import { useEffect } from "react";
 
 export default function SchoolPage() {
 
-  const searchParams = useSearchParams()
-  const role = searchParams.get("role") || "school"
-  const Role = searchParams.get("role")
-
-
-  useEffect(() => {
-    getUserAndPost(`http://localhost:8000/api/v1/auth/testUser`, role)
-    console.log(role);
-    console.log(Role);
-
-  }, [role])
-
-
 
   return (
     <div className="pt-30 pb-10 px-10 flex flex-col gap-10 bg-gray-200">
