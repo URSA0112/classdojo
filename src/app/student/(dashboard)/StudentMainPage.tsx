@@ -6,6 +6,8 @@ import { Separator } from "@/components/ui/separator";
 import { BookCheck, CalendarDays, LayoutDashboard, ScanEye, User, Backpack } from "lucide-react";
 import supabase from "@/utils/supabase";
 import { useTestUserStore } from "@/hooks/useUserStore";
+import { signOut } from "@/lib/SignOutUser";
+import { LogOut } from "lucide-react";
 
 
 export default function StudentHomePage() {
@@ -33,6 +35,13 @@ export default function StudentHomePage() {
                 CHeck USER
             </button>
             <h1 className="text-2xl font-bold">👋 Сайн байна уу, {user ? user.fullName : "User"}</h1>
+            <button
+                onClick={signOut}
+                className="w-full flex items-center gap-3 text-sm px-4 py-2 rounded-lg bg-red-50 text-red-500 hover:bg-red-100 transition font-medium"
+            >
+                <LogOut className="w-5 h-5" />
+                <span>Системээс гарах</span>
+            </button>
             <p className="text-gray-600">Эндээс та өөрийн сургалтын үйл ажиллагааг бүрэн хянах боломжтой.</p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
