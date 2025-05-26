@@ -4,13 +4,35 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { BookCheck, CalendarDays, LayoutDashboard, ScanEye, User, Backpack } from "lucide-react";
+import supabase from "@/utils/supabase";
+import { useTestUserStore } from "@/hooks/useUserStore";
+
 
 export default function StudentHomePage() {
+  const { user } = useTestUserStore();
+
   const [studentName, setStudentName] = useState("Билгүүн Энхбаяр");
+
+
+  const checkuser = async () => {
+    const fetchUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession()
+      console.log(session);
+
+      if (session) {
+        const { data: { user }, error } = await supabase.auth.getUser()
+        console.log(user)
+      }
+    }
+    fetchUser()
+  }
 
   return (
     <div className="max-w-6xl mx-auto p-6 space-y-6">
-      <h1 className="text-2xl font-bold">👋 Сайн байна уу, {studentName}</h1>
+      <button onClick={checkuser} className="bg-red-400 text-black px-4 py-2 rounded">
+        CHeck USER
+      </button>
+      <h1 className="text-2xl font-bold">👋 Сайн байна уу, {user ? user.fullName : "User"}</h1>
       <p className="text-gray-600">Эндээс та өөрийн сургалтын үйл ажиллагааг бүрэн хянах боломжтой.</p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -21,9 +43,8 @@ export default function StudentHomePage() {
             </CardTitle>
           </CardHeader>
           <CardContent className="text-sm text-gray-700">
-            <p>Анги: 12А</p>
-            <p>Овог нэр: Билгүүн Энхбаяр</p>
-            <p>И-мэйл: bilguun@example.mn</p>
+            <p>{user ? user.fullName : "User"}</p>
+            <p>{user ? user.email : "email"}</p>
           </CardContent>
         </Card>
 
@@ -95,6 +116,7 @@ export default function StudentHomePage() {
 
       <Separator />
       <p className="text-sm text-gray-400 text-center">© 2025 EduLab — Бүх эрх хуулиар хамгаалагдсан</p>
+
     </div>
   );
 }

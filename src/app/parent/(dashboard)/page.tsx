@@ -1,12 +1,31 @@
+'use client'
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import BigCalendar from "@/components/BigCalender";
 import EventCalendar from "@/components/EventCalender";
 import Announcements from "@/components/Announcements";
+import { getUserAndPost } from "@/lib/CreateTestUser";
+import { useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Page() {
+
+  const searchParams = useSearchParams()
+  const role = searchParams.get("role") || "school"
+  const Role = searchParams.get("role")
+
+
+  useEffect(() => {
+    getUserAndPost(`http://localhost:8000/api/v1/auth/testUser`, role)
+    console.log(role);
+    console.log(Role);
+
+  }, [role])
+
+
+
+
   const student = {
     lastName: "Бат",
     firstName: "Ариунжаргал",

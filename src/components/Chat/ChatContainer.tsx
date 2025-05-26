@@ -8,6 +8,7 @@ interface Message {
     timestamp: string
 }
 
+
 export default function ChatContainer({ messages }: { messages: Message[] }) {
     const [input, setInput] = useState('')
     const chatEndRef = useRef<HTMLDivElement | null>(null)

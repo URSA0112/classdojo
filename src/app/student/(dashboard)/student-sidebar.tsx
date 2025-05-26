@@ -49,7 +49,7 @@ const items: MenuGroup[] = [
       { title: "Хичээлүүд", url: "/student/subjects", icon: Backpack },
       { title: "Багш", url: "/student/teacher", icon: LayoutDashboard },
       { title: "Ирц", url: "/student/attendance", icon: ScanEye },
-      { title: "Тохиргоо", url: "/student/settings", icon: BookCheck },
+      { title: "Broadcast", url: "/student/broadcast", icon: BookCheck },
       { title: "Ангийн сурагчид", url: "/student/studentlist", icon: BookCheck },
     ],
   },

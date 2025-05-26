@@ -1,12 +1,31 @@
+'use client'
 import Announcements from "@/components/Announcements";
 import AttendanceChart from "@/components/AttendanceChart";
 import CountChart from "@/components/CountChart";
 import EventCalendar from "@/components/EventCalender";
 import FinanceChart from "@/components/FinanceChart";
 import UserCard from "@/components/UserCard";
+import { getUserAndPost } from "@/lib/CreateTestUser";
+import { useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 
 
 export default function SchoolPage() {
+
+  const searchParams = useSearchParams()
+  const role = searchParams.get("role") || "school"
+  const Role = searchParams.get("role")
+
+
+  useEffect(() => {
+    getUserAndPost(`http://localhost:8000/api/v1/auth/testUser`, role)
+    console.log(role);
+    console.log(Role);
+
+  }, [role])
+
+
+
   return (
     <div className="pt-30 pb-10 px-10 flex flex-col gap-10 bg-gray-200">
       <div className="p-4 flex gap-10 flex-col md:flex-row">

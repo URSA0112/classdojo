@@ -1,23 +1,23 @@
 'use client'
 import { useState } from "react"
 import supabase from "../../utils/supabase"
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
 
 export default function SelectRoleButton() {
 
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
     const [selectedRole, setSelectedRole] = useState("")
 
     const handleLoginWithRole = async (role: string) => {
+
         setSelectedRole(role)
 
         await supabase.auth.signInWithOAuth({
             provider: 'google',
             options: {
-                redirectTo: `${baseUrl}/${role}`,
+                redirectTo: `${baseUrl}/${role}?role=${role}`,
             },
         })
     }
-
 
 
     return (
@@ -38,3 +38,6 @@ export default function SelectRoleButton() {
 //       history.replaceState(null, "", window.location.pathname)
 //     }
 //   }, [])
+
+
+
