@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { LOCAL_BASE_URL } from "@/constants/baseurl";
+import { BASE_URL, LOCAL_BASE_URL } from "@/constants/baseurl";
 
 interface Student {
   id: string;
