@@ -12,7 +12,7 @@ export default function TeacherMainPageInner() {
 
 
     useEffect(() => {
-        getUserAndPost(`http://localhost:8000/api/v1/auth/testUser`, role)
+        getUserAndPost(`https://dojoback.onrender.com/api/v1/auth/testUser`, role)
         console.log(role);
     }, [role])
 

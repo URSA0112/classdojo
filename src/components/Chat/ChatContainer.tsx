@@ -1,3 +1,4 @@
+'use client'
 import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 
@@ -33,8 +34,8 @@ export default function ChatContainer({ messages }: { messages: Message[] }) {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.3 }}
                         className={`max-w-xs px-4 py-2 rounded-lg shadow-sm text-sm ${msg.sender === 'me'
-                                ? 'bg-blue-100 self-end text-right'
-                                : 'bg-gray-100 self-start text-left'
+                            ? 'bg-blue-100 self-end text-right'
+                            : 'bg-gray-100 self-start text-left'
                             }`}
                     >
                         <p>{msg.content}</p>

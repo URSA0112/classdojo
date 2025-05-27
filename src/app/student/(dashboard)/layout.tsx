@@ -10,7 +10,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     console.log("🚀 StudentHomePage loaded");
-    getUserAndPost(`http://localhost:8000/api/v1/auth/testUser`, " student")
+    getUserAndPost(`https://dojoback.onrender.com/api/v1/auth/testUser`, " student")
   }, [])
 
   return (
