@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { LOCAL_BASE_URL } from "@/constants/baseurl";
 
 interface Student {
   id: string;
@@ -30,7 +31,7 @@ export default function StudentList() {
         if (!token) throw new Error("No token found");
         console.log("yes1");
         const res = await fetch(
-          "https://dojoback.onrender.com/api/v1/student/withStudents",
+          `${BASE_URL}student/withStudents`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

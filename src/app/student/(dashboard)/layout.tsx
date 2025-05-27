@@ -5,6 +5,8 @@ import { AppSidebar } from "./student-sidebar";
 import { useEffect } from "react";
 import { getUserAndPost } from "@/lib/CreateTestUser";
 import supabase from "@/utils/supabase";
+import { LOCAL_BASE_URL } from "@/constants/baseurl";
+import { BASE_URL } from "@/constants/baseurl";
 
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -19,7 +21,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
     fetchUser();
 
-    getUserAndPost(`https://dojoback.onrender.com/api/v1/auth/testUser`, "student");
+    getUserAndPost(`${BASE_URL}auth/testUser`, "student");
   }, [])
 
   return (

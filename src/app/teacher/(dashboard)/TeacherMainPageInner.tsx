@@ -5,6 +5,7 @@ import { getUserAndPost } from "@/lib/CreateTestUser"
 
 import { useEffect } from "react";
 import { useSearchParams } from 'next/navigation'
+import { BASE_URL, LOCAL_BASE_URL } from "@/constants/baseurl";
 
 export default function TeacherMainPageInner() {
     const searchParams = useSearchParams()
@@ -12,7 +13,7 @@ export default function TeacherMainPageInner() {
 
 
     useEffect(() => {
-        getUserAndPost(`https://dojoback.onrender.com/api/v1/auth/testUser`, role)
+        getUserAndPost(`${BASE_URL}auth/testUser`, role)
         console.log(role);
     }, [role])
 

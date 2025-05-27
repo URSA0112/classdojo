@@ -1,1 +1,0 @@
-export const LOCAL_BASE_URL = "https://dojoback.onrender.com/api/v1/";
