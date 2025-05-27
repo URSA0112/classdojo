@@ -1,6 +1,7 @@
 'use client'
 import { useState } from "react"
 import supabase from "../../utils/supabase"
+import { LOCAL_BASE_URL } from "@/constants/baseurl";
 
 export default function SelectRoleButton() {
     const baseUrl = typeof window !== 'undefined' && window.location.origin
@@ -16,7 +17,7 @@ export default function SelectRoleButton() {
         await supabase.auth.signInWithOAuth({
             provider: 'google',
             options: {
-                redirectTo: `${baseUrl}/${role}?role=${role}`,
+                redirectTo: `${`http://localhost:3000`}/${role}?role=${role}`,
             },
         })
     }
