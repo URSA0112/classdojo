@@ -17,7 +17,7 @@ export default function SelectRoleButton() {
         await supabase.auth.signInWithOAuth({
             provider: 'google',
             options: {
-                redirectTo: `${`http://localhost:3000`}/${role}?role=${role}`,
+                redirectTo: `${window.location.origin}/${role}?role=${role}`,
             },
         })
     }
